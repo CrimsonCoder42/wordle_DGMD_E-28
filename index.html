@@ -12,28 +12,27 @@
 <body>
 
     <!-- contains entire game  -->
-    <div class="game-board">
-
-        <div class="playerInfo"></div>
-
-        <!-- main header "Wordle"-->
-        <div class="title-board">
-            <div></div>
-        </div>
-
-        
-        <!-- message board  -->
-        <div class="message-board"></div>
+    <div class="game-board"></div>
 
 
         <!-- where tiles appear and flip -->
-        <div class="tile-board"></div>
+        <div class="tile-board">
+        <div class ="tile" id="wordle">Wordle</div>
+        </div>
+    <!-- display stats -->
 
+    <div class="display-board" id ="display">
+            <div class="display" id= "pWins"></div>
+            <div class="display"id= "pLosses"></div>
+            <div class="display" id="gamesPlayed"></div>
+            <div class="display" id= "cheatWord">Cheater</div>
+    </div>
 
         <!-- keyboard to type your guess -->
         <div class="key-board"></div>
 
-    </div>
+
+    
   <!--  <script src="test.js"></script>-->
     <script type="module" src="index.js"></script>
 </body>
