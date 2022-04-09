@@ -32,10 +32,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: hsl(var(--hue, 200),
-      var(--saturation, 1%),
-      /* adds lightness when hover over.*/
-      calc(var(--lightness-offset, 0%) + var(--lightness, 51%)));
+  background-color: #696969;
   color: white;
   fill: white;
   text-transform: uppercase;
@@ -49,9 +46,8 @@ body {
   height: 1.75em;
 }
 
-.key:hover,
-.key:focus {
-  --lightness-offset: 10%;
+.key:hover{
+  background-color: #A9A9A9;
 }
 
 

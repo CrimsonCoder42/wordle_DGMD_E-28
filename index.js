@@ -1,34 +1,30 @@
+// import all modules 
+
 import Player from "./player.js";
 import GameBoard from "./gameboard.js";
 import Keyboard from "./keyboard.js";
 
-
+// activate gameboard, keyboard, and player. 
 const board = new GameBoard();
-let keyBoard = new Keyboard;
+let keyBoard = new Keyboard();
 let p1 = new Player("Devin");
-let word;
 
-const getWord = () => {
-    fetch('http://localhost:2020/wordList')
-    .then(res => res.json())
-    .then(data => {
-        word = data
-        makeBoard()
-    })
-    .catch(err => console.log(err))
+// calls fetch 
+function myFunc(data) {
+    let word = data.toString();
+    board.word = word.toUpperCase()
+    board.array = Array.from(board.word);
 }
 
-getWord()
-  
+fetch('http://161.35.128.37:2020/wordList')
+.then(res => res.json())
+.then(data => myFunc(data))
+.catch(err => console.log(err))
+
 p1.display();
 board.makeGameBoard();
 keyBoard.makeKeyboard();
 
-
-function makeBoard(){
-    board.word = word.toUpperCase()
-}
-console.log(board.word)
 p1.gamesPlayed = 0
 p1.startPopUp()
 writeNcheck();
@@ -67,14 +63,12 @@ function writeNcheck() {
 
 function checkLetter() {
     let playerLetter = board.tileRows[board.currentRow][board.currentTile];
-    console.log(gameArray[board.currentTile])
-    console.log(board.tileRows[board.currentRow][board.currentTile])
-    if ( gameArray[board.currentTile] == playerLetter) {
+    if ( board.array[board.currentTile] == playerLetter) {
         board.greenTiles()
         winLoseDraw()
         return
     }
-    if(gameArray.includes(playerLetter)) {
+    if(board.array.includes(playerLetter)) {
         board.yellowTiles()
         return
     }
@@ -85,17 +79,13 @@ function checkLetter() {
 
 function winLoseDraw(){
     let playerGuess =  board.tileRows[board.currentRow].join('')
-    console.log('boardword '+ board.word)
-    console.log('playerGuess '+ playerGuess)
-
     if (board.word === playerGuess){
-        console.log("Test")
         p1.wins++;
         p1.display();
-        console.log('You WIN!')
     }
     if(board.currentRow == 5 && board.currentTile == 4){
-    console.log("You loose")
+        p1.losses++;
+        p1.display();
 }
 
 }

@@ -1,6 +1,7 @@
 export default class GameBoard {
     constructor() {
-        this.wordList = " "
+        this.word = " "
+        this.array = []
         this.win = 0;
         this.currentRow = 0;
         this.currentTile = 0;
