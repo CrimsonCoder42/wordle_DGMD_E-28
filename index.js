@@ -2,25 +2,33 @@ import Player from "./player.js";
 import GameBoard from "./gameboard.js";
 import Keyboard from "./keyboard.js";
 
-let word = "hello"
-let gameWord = word.toUpperCase()
-let gameArray = Array.from(gameWord);
-console.log(gameArray);
 
-// create gameboard and game tiles.  
-const board = new GameBoard(gameWord);
+const board = new GameBoard();
 let keyBoard = new Keyboard;
 let p1 = new Player("Devin");
+let word;
 
-//p1.display();
-
-makeBoard()
-function makeBoard(){
-    p1.display();
-    board.makeGameBoard();
-    keyBoard.makeKeyboard();
+const getWord = () => {
+    fetch('http://localhost:2020/wordList')
+    .then(res => res.json())
+    .then(data => {
+        word = data
+        makeBoard()
+    })
+    .catch(err => console.log(err))
 }
 
+getWord()
+  
+p1.display();
+board.makeGameBoard();
+keyBoard.makeKeyboard();
+
+
+function makeBoard(){
+    board.word = word.toUpperCase()
+}
+console.log(board.word)
 p1.gamesPlayed = 0
 p1.startPopUp()
 writeNcheck();
