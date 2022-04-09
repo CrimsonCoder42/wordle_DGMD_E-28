@@ -21,7 +21,7 @@ function makeBoard(){
     keyBoard.makeKeyboard();
 }
 
-p1.gamesPlayed = 1
+p1.gamesPlayed = 0
 p1.startPopUp()
 writeNcheck();
 function writeNcheck() {
