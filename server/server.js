@@ -15,7 +15,7 @@ app.get('/word', (req, res) => { // getting word from the radom words api
         params: {count: '5', wordLength: '5'}, //params to make sure word length is 5.
         headers: {
             'x-rapidapi-host': 'random-words5.p.rapidapi.com',
-            'x-rapidapi-key': process.env.RAPID_API_KEY
+            'x-rapidapi-key': process.env.API_KEY
         }
     }
     axios.request(options).then((response) => {
@@ -35,7 +35,7 @@ app.get('/check', (req, res) => {
         params: {entry: word},
         headers: {
             'x-rapidapi-host': 'twinword-word-graph-dictionary.p.rapidapi.com',
-            'x-rapidapi-key': process.env.RAPID_API_KEY
+            'x-rapidapi-key': process.env.API_KEY
         }
     }
     axios.request(options).then((response) => {

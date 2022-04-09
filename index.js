@@ -8,17 +8,22 @@ let gameArray = Array.from(gameWord);
 console.log(gameArray);
 
 // create gameboard and game tiles.  
-const board = new GameBoard(0, 0, gameWord);
+const board = new GameBoard(gameWord);
 let keyBoard = new Keyboard;
 let p1 = new Player("Devin");
 
+//p1.display();
 
-board.makeGameBoard();
-keyBoard.makeKeyboard();
-p1.display();
-writeNcheck()
+makeBoard()
+function makeBoard(){
+    p1.display();
+    board.makeGameBoard();
+    keyBoard.makeKeyboard();
+}
 
-
+p1.gamesPlayed = 1
+p1.startPopUp()
+writeNcheck();
 function writeNcheck() {
     document.querySelectorAll('.key').forEach(item => {
         item.addEventListener('click', event => {
@@ -58,6 +63,7 @@ function checkLetter() {
     console.log(board.tileRows[board.currentRow][board.currentTile])
     if ( gameArray[board.currentTile] == playerLetter) {
         board.greenTiles()
+        winLoseDraw()
         return
     }
     if(gameArray.includes(playerLetter)) {
@@ -65,8 +71,26 @@ function checkLetter() {
         return
     }
     keyBoard.blackKey()
+    winLoseDraw()
 }
 
+
+function winLoseDraw(){
+    let playerGuess =  board.tileRows[board.currentRow].join('')
+    console.log('boardword '+ board.word)
+    console.log('playerGuess '+ playerGuess)
+
+    if (board.word === playerGuess){
+        console.log("Test")
+        p1.wins++;
+        p1.display();
+        console.log('You WIN!')
+    }
+    if(board.currentRow == 5 && board.currentTile == 4){
+    console.log("You loose")
+}
+
+}
 //console.log('got it!')
 // p1.wins++;
 // p1.display();

@@ -1,9 +1,9 @@
 export default class GameBoard {
-    constructor(row, tile, word) {
+    constructor(word) {
         this.word = word;
         this.win = 0;
-        this.currentRow = row;
-        this.currentTile = tile;
+        this.currentRow = 0;
+        this.currentTile = 0;
         this.tileRows = [
             ['', '', '', '', ''],
             ['', '', '', '', ''],
