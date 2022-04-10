@@ -57,9 +57,6 @@ export default class Player {
                         let popup =document.getElementById("gamePop")
                         popup.style.position = 'fixed'; 
                         popup.style.visibility = 'hidden';
-                        if(this.gamesPlayed > 0){
-                            document.querySelectorAll('key').style.back
-                        }
                     })
                     
                 })

@@ -8,26 +8,33 @@ import Keyboard from "./keyboard.js";
 const board = new GameBoard();
 let keyBoard = new Keyboard();
 let p1 = new Player("Devin");
-
+getWord()
 // calls fetch 
 function myFunc(data) {
     let word = data.toString();
     board.word = word.toUpperCase()
     board.array = Array.from(board.word);
+    set()
 }
 
-fetch('http://161.35.128.37:2020/wordList')
-.then(res => res.json())
-.then(data => myFunc(data))
-.catch(err => console.log(err))
+function getWord() {
+    fetch('http://161.35.128.37:2020/wordList')
+    .then(res => res.json())
+    .then(data => myFunc(data))
+    .catch(err => console.log(err)) 
+}
+
+
+function set(){ 
+    p1.startPopUp()
+    board.makeGameBoard();
+    keyBoard.makeKeyboard();
+    writeNcheck();
+}
 
 p1.display();
-board.makeGameBoard();
-keyBoard.makeKeyboard();
 
 p1.gamesPlayed = 0
-p1.startPopUp()
-writeNcheck();
 function writeNcheck() {
     document.querySelectorAll('.key').forEach(item => {
         item.addEventListener('click', event => {
@@ -80,8 +87,16 @@ function checkLetter() {
 function winLoseDraw(){
     let playerGuess =  board.tileRows[board.currentRow].join('')
     if (board.word === playerGuess){
+        document.querySelectorAll('.key').forEach(function(a){
+            a.remove()
+            })
+            document.querySelectorAll('.tile').forEach(function(a){
+                a.remove()
+                })
+        getWord()
         p1.wins++;
         p1.display();
+        
     }
     if(board.currentRow == 5 && board.currentTile == 4){
         p1.losses++;
