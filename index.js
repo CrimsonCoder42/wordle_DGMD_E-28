@@ -1,42 +1,57 @@
 // import all modules 
-
-import Player from "./player.js/index.js";
-import GameBoard from "./public/gameboard.js/index.js";
-import Keyboard from "./keyboard.js/index.js";
+import Player from "./player.js";
+import GameBoard from "./gameboard.js";
+import Keyboard from "./keyboard.js";
 
 // activate gameboard, keyboard, and player. 
 const board = new GameBoard();
 let keyBoard = new Keyboard();
 let p1 = new Player("Devin");
-getWord()
+startPopUp()
 
-// Gets called by getWord() once promise is completed adds word and starts game. 
-function myFunc(data) {
-    let word = data.toString();
+// initial pop up that calls start game when button is pressed. 
+function startPopUp() {
+    let playButton = document.getElementById('play')
+    playButton.innerText = "Let's Play!"
+    playButton.addEventListener('click', startGame)
+    }
+
+// calls myFunc to get a new word
+function startGame(){
+    p1.makeVisible()
+	getWord().then(myFunc);
+}
+
+async function getWord(){
+	const url = "https://random-word-api.herokuapp.com/all";
+  	const res = await fetch(url);
+  	const allWords = await res.json();
+  	const fiveLetterWords = allWords.filter(word => word.length === 5);
+  	const randIndex = Math.floor(Math.random() * fiveLetterWords.length);
+      const word = fiveLetterWords[randIndex];
+	return word;
+}
+
+function myFunc(word) {
     board.word = word.toUpperCase()
     board.array = Array.from(board.word);
     set()
 }
 
-function getWord() {
-    fetch('http://161.35.128.37:2020/wordList')
-    .then(res => res.json())
-    .then(data => myFunc(data))
-    .catch(err => console.log(err)) 
-}
 
-
+// creates gameboard and display
 function set(){ 
-    p1.startPopUp()
+    document.getElementById("wordle").textContent = 'WORDLE'
+    document.getElementById('cheatWord').innerHTML = "Cheater"
     board.makeGameBoard();
     keyBoard.makeKeyboard();
     writeNcheck();
     board.currentRow = 0;
     board.currentTile = 0;
+    p1.display();
 }
 
-p1.display();
-
+// checks input letter and pushes to current tile  
 p1.gamesPlayed = 0
 function writeNcheck() {
     document.querySelectorAll('.key').forEach(item => {
@@ -49,7 +64,6 @@ function writeNcheck() {
                 return
             }
             if (letter == 'ENT') {
-                console.log("ENT")
                 checkLetter()
                 return
             }
@@ -58,14 +72,15 @@ function writeNcheck() {
                 return
             }
             if (board.currentRow < 6 && board.currentTile < 5) {
-                console.log(board.letter)
                 tilePosition.textContent = letter
                 keyBoard.playLoc = `${board.currentRow}${board.currentTile}` 
                 board.tileRows[board.currentRow][board.currentTile] = letter;
                 checkLetter()
                 board.currentTile++
             }
-            if (board.currentTile == 5) {
+            if (board.currentTile == 5)
+             {  
+                winLoseDraw()
                 board.currentTile = 0;
                 board.currentRow++
             }
@@ -73,37 +88,39 @@ function writeNcheck() {
     })
 }
 
+//checks letter to make sure change color 
+
 function checkLetter() {
     let playerLetter = board.tileRows[board.currentRow][board.currentTile];
     if ( board.array[board.currentTile] == playerLetter) {
         board.greenTiles()
-        winLoseDraw()
         return
     }
     if(board.array.includes(playerLetter)) {
         board.yellowTiles()
-        winLoseDraw()
         return
-    }
-    
+    }   
     keyBoard.blackKey()
 }
 
 
 function winLoseDraw(){
+    let showWin = document.getElementById("wordle")
     let playerGuess =  board.tileRows[board.currentRow].join('')
     if (board.word === playerGuess){
-        getWord()
-        p1.wins++;;
-        p1.reset()
+        showWin.textContent = "You Win!!!"
+        p1.wins++;
+        p1.gamesPlayed++;
         p1.display();
-        
+        startGame();
+        p1.reset();            
     }
-    if(board.currentRow == 5 && board.currentTile == 4){
-        getWord()
+    if(board.currentRow == 5 && board.currentTile == 5){
+        showWin.textContent = "You Lose!!"
         p1.losses++;
         p1.gamesPlayed++
         p1.display();
+        startGame();
         p1.reset()
 }
 

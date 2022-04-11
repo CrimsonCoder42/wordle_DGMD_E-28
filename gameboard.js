@@ -49,19 +49,4 @@ export default class GameBoard {
     blackTiles() {
         document.getElementById(`${this.currentRow}${this.currentTile}`).style.backgroundColor = 'hsl(245, 3%, 20%)';
     }
-    cheatEntDel(){
-        if (this.letter == 'CHEAT') {
-            document.getElementById("cheatWord").innerHTML = board.word
-            return
-        }
-        if (letter == 'ENT') {
-            console.log("ENT")
-            checkLetter()
-            return
-        }
-        if (letter == '<<') {
-            board.deleteTile()
-            return
-        }
-    }
 }
