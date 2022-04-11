@@ -1,15 +1,16 @@
 // import all modules 
 
-import Player from "./player.js";
-import GameBoard from "./gameboard.js";
-import Keyboard from "./keyboard.js";
+import Player from "./player.js/index.js";
+import GameBoard from "./public/gameboard.js/index.js";
+import Keyboard from "./keyboard.js/index.js";
 
 // activate gameboard, keyboard, and player. 
 const board = new GameBoard();
 let keyBoard = new Keyboard();
 let p1 = new Player("Devin");
 getWord()
-// calls fetch 
+
+// Gets called by getWord() once promise is completed adds word and starts game. 
 function myFunc(data) {
     let word = data.toString();
     board.word = word.toUpperCase()
@@ -30,6 +31,8 @@ function set(){
     board.makeGameBoard();
     keyBoard.makeKeyboard();
     writeNcheck();
+    board.currentRow = 0;
+    board.currentTile = 0;
 }
 
 p1.display();
@@ -39,6 +42,7 @@ function writeNcheck() {
     document.querySelectorAll('.key').forEach(item => {
         item.addEventListener('click', event => {
             let letter = event.target.innerText
+            board.letter = letter
             let tilePosition = document.getElementById(`${board.currentRow}${board.currentTile}`)
             if (letter == 'CHEAT') {
                 document.getElementById("cheatWord").innerHTML = board.word
@@ -54,6 +58,7 @@ function writeNcheck() {
                 return
             }
             if (board.currentRow < 6 && board.currentTile < 5) {
+                console.log(board.letter)
                 tilePosition.textContent = letter
                 keyBoard.playLoc = `${board.currentRow}${board.currentTile}` 
                 board.tileRows[board.currentRow][board.currentTile] = letter;
@@ -77,34 +82,29 @@ function checkLetter() {
     }
     if(board.array.includes(playerLetter)) {
         board.yellowTiles()
+        winLoseDraw()
         return
     }
+    
     keyBoard.blackKey()
-    winLoseDraw()
 }
 
 
 function winLoseDraw(){
     let playerGuess =  board.tileRows[board.currentRow].join('')
     if (board.word === playerGuess){
-        document.querySelectorAll('.key').forEach(function(a){
-            a.remove()
-            })
-            document.querySelectorAll('.tile').forEach(function(a){
-                a.remove()
-                })
         getWord()
-        p1.wins++;
+        p1.wins++;;
+        p1.reset()
         p1.display();
         
     }
     if(board.currentRow == 5 && board.currentTile == 4){
+        getWord()
         p1.losses++;
+        p1.gamesPlayed++
         p1.display();
+        p1.reset()
 }
 
 }
-//console.log('got it!')
-// p1.wins++;
-// p1.display();
-// document.getElementById('wordle').innerText = "You Won!!"
